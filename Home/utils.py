@@ -1,6 +1,7 @@
 import random
 from django.core.mail import send_mail
 from django.core.cache import cache
+from decouple import config
 
 def generate_otp():
     return str(random.randint(100000, 999999))
@@ -9,12 +10,12 @@ def send_otp_email(email, otp):
     send_mail(
         subject='Your OTP Code',
         message=f'Your OTP is: {otp}',
-        from_email='yourapp@example.com',
+        from_email='kp755508@gmail.com',
         recipient_list=[email],
         fail_silently=False,
     )
 
-def set_otp(email, otp, purpose, ttl=300):  # 5 minutes = 300 seconds
+def set_otp(email, otp, purpose, ttl=300):  
     cache_key = f"{purpose}_otp_{email}"
     cache.set(cache_key, otp, timeout=ttl)
 
