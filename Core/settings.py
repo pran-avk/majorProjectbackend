@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security settings
 SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", cast=bool)
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'majorprojectbackend-n97z.onrender.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'majorprojectbackend-02vo.onrender.com']
 
 # Application definition
 INSTALLED_APPS = [
