@@ -17,7 +17,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS = ['majorprojectbackend-3.onrender.com']
+ALLOWED_HOSTS = ['majorprojectbackend-n97z.onrender.com']
 
 # Application definition
 INSTALLED_APPS = [
