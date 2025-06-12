@@ -111,3 +111,19 @@ class VerifyLoginView(APIView):
 
         delete_otp(email, "login")
         return Response(get_tokens(user), status=status.HTTP_200_OK)
+
+
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Register
+
+@api_view(['DELETE'])
+def delete_user_by_email(request, email):
+    try:
+        user = Register.objects.get(email=email)
+        user.delete()
+        return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    except Register.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
