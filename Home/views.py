@@ -5,7 +5,7 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from rest_framework.decorators import api_view
 from .models import Register
 from .serializers import RegisterSerializer
 from .utils import generate_otp, send_otp_email, set_otp, get_otp, delete_otp
@@ -58,7 +58,7 @@ class VerifySignupView(APIView):
 
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()  # password hashing is handled in serializer
+            serializer.save()
             delete_otp(email, "signup")
             user = Register.objects.get(email=email)
             tokens = get_tokens(user)
@@ -110,14 +110,20 @@ class VerifyLoginView(APIView):
             return Response({"detail": "Incorrect password."}, status=status.HTTP_401_UNAUTHORIZED)
 
         delete_otp(email, "login")
-        return Response(get_tokens(user), status=status.HTTP_200_OK)
+
+        tokens = get_tokens(user)
+        return Response({
+            "tokens": tokens,
+            "user": {
+                "name": user.name,
+                "dob": user.dob,
+                "height": user.height,
+                "gender": user.gender
+            }
+        }, status=status.HTTP_200_OK)
 
 
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Register
 
 @api_view(['DELETE'])
 def delete_user_by_email(request, email):
